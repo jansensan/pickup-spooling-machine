@@ -17,6 +17,7 @@ int toggleValue;
 int ledOutPin = 13;
 
 float currentSpeed = 0;
+int currentDirection = 1;
 
 
 // defaults to AccelStepper::FULL4WIRE (4 pins) on 2, 3, 4, 5
@@ -40,12 +41,24 @@ void setup() {
 }
 
 void loop() {
+  updateMotorDirection();
   updateMotorSpeed();
   stepper.runSpeed();
 }
 
 
 // methods definitions
+void updateMotorDirection() {
+  // read toggle switch state
+  toggleValue = digitalRead(toggleInPin);
+
+  if (toggleValue == HIGH) {
+    currentDirection = -1;
+  } else if (toggleValue == LOW) {
+    currentDirection = 1;
+  }
+}
+
 void updateMotorSpeed() {
   potValue = analogRead(potInPin);
 
@@ -64,5 +77,5 @@ void updateMotorSpeed() {
     currentSpeed = newSpeed;
   }
 
-  stepper.setSpeed(currentSpeed);
+  stepper.setSpeed(currentSpeed * currentDirection);
 }
