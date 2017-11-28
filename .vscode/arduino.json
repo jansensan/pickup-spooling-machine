@@ -1,0 +1,6 @@
+{
+    "board": "arduino:avr:diecimila",
+    "configuration": "cpu=atmega168",
+    "port": "/dev/cu.usbserial-A4001o0S",
+    "sketch": "src/arduino/pickup-spooling-machine/pickup-spooling-machine.ino"
+}
