@@ -8,13 +8,16 @@ const float MAX_POT_VALUE = 1023.;
 
 
 // vars
-int potInPin = A0;
-int potValue;
+int speedInputPin = A0;
+int speedPotValue;
 
-int toggleInPin = 7;
-int toggleValue;
+int directionInputPin = 7;
+int directionToggleValue;
 
-int ledOutPin = 13;
+int motorInputPin = 7;
+int motorToggleValue;
+
+int ledOutputPin = 13;
 
 float currentSpeed = 0;
 int currentDirection = 1;
@@ -27,17 +30,18 @@ AccelStepper stepper;
 // arduino methods
 void setup() {
   // set input pins
-  pinMode(potInPin, INPUT);
-  pinMode(toggleInPin, INPUT_PULLUP);
+  pinMode(speedInputPin, INPUT);
+  pinMode(directionInputPin, INPUT_PULLUP);
+  pinMode(motorInputPin, INPUT_PULLUP);
 
   // set output pins
-  pinMode(ledOutPin, OUTPUT);
+  pinMode(ledOutputPin, OUTPUT);
 
   // init stepper
   stepper.setMaxSpeed(MAX_STEPPER_SPEED);
 
   // turn light on
-  digitalWrite(ledOutPin, HIGH);
+  digitalWrite(ledOutputPin, HIGH);
 }
 
 void loop() {
@@ -50,20 +54,20 @@ void loop() {
 // methods definitions
 void updateMotorDirection() {
   // read toggle switch state
-  toggleValue = digitalRead(toggleInPin);
+  directionToggleValue = digitalRead(directionInputPin);
 
-  if (toggleValue == HIGH) {
+  if (directionToggleValue == HIGH) {
     currentDirection = -1;
-  } else if (toggleValue == LOW) {
+  } else if (directionToggleValue == LOW) {
     currentDirection = 1;
   }
 }
 
 void updateMotorSpeed() {
-  potValue = analogRead(potInPin);
+  speedPotValue = analogRead(speedInputPin);
 
   // calculate new speed from pot input
-  int newSpeed = floor((MAX_STEPPER_SPEED / MAX_POT_VALUE) * potValue);
+  int newSpeed = floor((MAX_STEPPER_SPEED / MAX_POT_VALUE) * speedPotValue);
 
   // limit values
   if (newSpeed > MAX_STEPPER_SPEED) {
