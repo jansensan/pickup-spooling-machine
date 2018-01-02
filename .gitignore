@@ -4,5 +4,5 @@
 *._*
 *.DS_STORE
 
-### NODE ###
-node_modules
+### PROJECT FILES AND DIRECTORIES ###
+experiments
