@@ -16,6 +16,7 @@ int directionToggleValue;
 
 int motorInputPin = 8;
 int motorToggleValue;
+bool isMotorOn = false;
 
 int ledOutputPin = 13;
 
@@ -49,10 +50,25 @@ void loop() {
   updateMotorDirection();
   updateMotorSpeed();
   stepper.runSpeed();
+
+  if (isMotorOn) {
+    stepper.runSpeed();
+  }
 }
 
 
 // methods definitions
+void updateMotorToggle() {
+  // read toggle switch state
+  motorToggleValue = digitalRead(motorInputPin);
+
+  if (motorToggleValue == HIGH) {
+    isMotorOn = false;
+  } else if (motorToggleValue == LOW) {
+    isMotorOn = true;
+  }
+}
+
 void updateMotorDirection() {
   // read toggle switch state
   directionToggleValue = digitalRead(directionInputPin);
