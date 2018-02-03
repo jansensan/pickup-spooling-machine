@@ -70,9 +70,15 @@ void updateMotorToggle() {
 }
 
 void updateMotorDirection() {
+  // dont do anything if the motor is already on
+  if (isMotorOn) {
+    return;
+  }
+  
   // read toggle switch state
   directionToggleValue = digitalRead(directionInputPin);
 
+  // assign value according to toggle position
   if (directionToggleValue == HIGH) {
     currentDirection = -1;
   } else if (directionToggleValue == LOW) {
