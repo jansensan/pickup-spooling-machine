@@ -3,7 +3,7 @@
 
 
 // constants
-const float MAX_STEPPER_SPEED = 1000.;
+const float MAX_STEPPER_SPEED = 500.;
 const float MAX_POT_VALUE = 1023.;
 
 
@@ -29,7 +29,9 @@ AccelStepper stepper;
 
 
 // arduino methods
-void setup() {
+void setup() {  
+  Serial.begin(9600);
+  
   // set input pins
   pinMode(speedInputPin, INPUT);
   pinMode(directionInputPin, INPUT_PULLUP);
@@ -47,9 +49,9 @@ void setup() {
 }
 
 void loop() {
-  updateMotorDirection();
+  updateMotorToggle();
+//  updateMotorDirection();
   updateMotorSpeed();
-  stepper.runSpeed();
 
   if (isMotorOn) {
     stepper.runSpeed();
@@ -99,10 +101,26 @@ void updateMotorSpeed() {
     newSpeed = 0;
   }
 
-  // assign new speed if different
-  if (newSpeed != currentSpeed) {
-    currentSpeed = newSpeed;
-  }
+  // check diff between new and current
+  // value is often not stable,
+  // doing this reduces the amount of speed changes per loop
+  int speedDiff = abs(currentSpeed - newSpeed);
 
-  stepper.setSpeed(currentSpeed * currentDirection);
+  // assign new speed
+  if (speedDiff >= 2) {
+    currentSpeed = newSpeed;
+    setMotorSpeed();
+  }
 }
+
+void setMotorSpeed() {
+  int newSpeed = currentSpeed * currentDirection;
+
+  Serial.println("--- setMotorSpeed ---");
+  Serial.print("newSpeed: ");
+  Serial.print(newSpeed);
+  Serial.println("");
+
+  stepper.setSpeed(newSpeed);
+}
+
