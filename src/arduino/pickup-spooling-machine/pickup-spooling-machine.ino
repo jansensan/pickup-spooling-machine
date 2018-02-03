@@ -39,6 +39,7 @@ void setup() {
 
   // init stepper
   stepper.setMaxSpeed(MAX_STEPPER_SPEED);
+  stepper.setSpeed(0);
 
   // turn light on
   digitalWrite(ledOutputPin, HIGH);
