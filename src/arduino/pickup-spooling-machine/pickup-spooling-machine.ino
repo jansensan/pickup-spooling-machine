@@ -14,7 +14,7 @@ int speedPotValue;
 int directionInputPin = 7;
 int directionToggleValue;
 
-int motorInputPin = 7;
+int motorInputPin = 8;
 int motorToggleValue;
 
 int ledOutputPin = 13;
